@@ -1,32 +1,35 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
-const hre = require("hardhat");
+const { ethers } = require("hardhat");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  // Compile the contracts
+  const Addition = await ethers.getContractFactory("Addition");
+  const Subtraction = await ethers.getContractFactory("Subtraction");
+  const Multiplication = await ethers.getContractFactory("Multiplication");
+  const Division = await ethers.getContractFactory("Division");
+  const Calculator = await ethers.getContractFactory("Calculator");
 
-  const lockedAmount = hre.ethers.utils.parseEther("0.001");
-
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  await lock.deployed();
-
-  console.log(
-    `Lock with ${ethers.utils.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
+  // Deploy the contracts
+  const addition = await Addition.deploy();
+  const subtraction = await Subtraction.deploy();
+  const multiplication = await Multiplication.deploy();
+  const division = await Division.deploy();
+  const calculator = await Calculator.deploy(
+    addition.address,
+    subtraction.address,
+    multiplication.address,
+    division.address
   );
+
+  // Wait for the contract to be deployed
+  await calculator.deployed();
+
+  // Log the contract address
+  console.log("Calculator deployed to:", calculator.address);
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
