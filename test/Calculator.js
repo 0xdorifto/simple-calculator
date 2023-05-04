@@ -1,30 +1,13 @@
+// test/Calculator.test.js
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("Calculator", function () {
   let calculator;
 
-  beforeEach(async () => {
-    // Deploy the smart contracts
-    const Addition = await ethers.getContractFactory("Addition");
-    const addition = await Addition.deploy();
-
-    const Subtraction = await ethers.getContractFactory("Subtraction");
-    const subtraction = await Subtraction.deploy();
-
-    const Multiplication = await ethers.getContractFactory("Multiplication");
-    const multiplication = await Multiplication.deploy();
-
-    const Division = await ethers.getContractFactory("Division");
-    const division = await Division.deploy();
-
+  beforeEach(async function () {
     const Calculator = await ethers.getContractFactory("Calculator");
-    calculator = await Calculator.deploy(
-      addition.address,
-      subtraction.address,
-      multiplication.address,
-      division.address
-    );
+    calculator = await Calculator.deploy();
   });
 
   it("should emit an event on addition", async function () {
