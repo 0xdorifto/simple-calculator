@@ -2,21 +2,10 @@
 
 pragma solidity 0.8.19;
 
-interface IAddition {
-    function add(int arg1, int arg2) external returns (int);
-}
-
-interface ISubtraction {
-    function subtract(int arg1, int arg2) external returns (int);
-}
-
-interface IMultiplication {
-    function multiply(int arg1, int arg2) external returns (int);
-}
-
-interface IDivision {
-    function divide(int arg1, int arg2) external returns (int);
-}
+import "./IAddition.sol";
+import "./ISubtraction.sol";
+import "./IMultiplication.sol";
+import "./IDivision.sol";
 
 contract Calculator {
     IAddition addition;
@@ -24,7 +13,7 @@ contract Calculator {
     IMultiplication multiplication;
     IDivision division;
 
-    event Log(int arg1, int arg2, string indexed message, int result);
+    event Log(int arg1, int arg2, string message, int result);
 
     constructor(
         address aAddress,
@@ -45,16 +34,16 @@ contract Calculator {
 
     function subtract(int arg1, int arg2) public {
         int result = subtraction.subtract(arg1, arg2);
-        emit Log(arg1, arg2, "Addition", result);
+        emit Log(arg1, arg2, "Subtraction", result);
     }
 
     function multiply(int arg1, int arg2) public {
         int result = multiplication.multiply(arg1, arg2);
-        emit Log(arg1, arg2, "Addition", result);
+        emit Log(arg1, arg2, "Multiplication", result);
     }
 
     function divide(int arg1, int arg2) public {
         int result = division.divide(arg1, arg2);
-        emit Log(arg1, arg2, "Addition", result);
+        emit Log(arg1, arg2, "Division", result);
     }
 }

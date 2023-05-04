@@ -2,7 +2,9 @@
 
 pragma solidity 0.8.19;
 
-contract Division {
+import "./IDivision.sol";
+
+contract Division is IDivision {
     function divide(int arg1, int arg2) public pure returns (int) {
         return arg1 / arg2;
     }
